@@ -1,0 +1,9 @@
+/data
+*.csv
+*.png
+*.xlsx
+.env
+/.venv
+/.vscode
+/__pycache__
+/pca/__pycache__
