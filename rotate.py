@@ -1,8 +1,11 @@
+from json import load
 import os
 import csv
 import numpy as np
 import pandas as pd
 from pathlib import Path
+from dotenv import load_dotenv
+load_dotenv()
 
 def calculate_tilt_angle(platform_coords):
     x1, z1 = platform_coords[0]
@@ -32,8 +35,9 @@ if __name__ == '__main__':
     angle = calculate_tilt_angle(platform_coords)
     print(f"Rotation angle: {np.degrees(angle)} degrees")
 
-    srcdir = r"C:\Users\lal\Documents\tez\virtualreality_data_version1\352\virtual_reality\S001\trackers"
-    targetdir = r"C:\Users\lal\Documents\tez\virtualreality_data_version1\352\virtual_reality\S001\trackers_rotated"
+    srcdir = load_dotenv('SRC_DIR_ROTATE')
+    targetdir = load_dotenv('TARGET_DIR_ROTATE')
+
     if not os.path.exists(targetdir):
         os.makedirs(targetdir)
     # Process files directly from srcdir
@@ -46,6 +50,9 @@ if __name__ == '__main__':
                 print(f"Warning: {srcfile} is empty. Skipping.")
                 continue
             pos_x = movement_data['pos_x']
+            if pos_x.isnull().all():
+                print(f"Warning: {srcfile} contains NaN values in 'pos_x'. Skipping.")
+                continue
             pos_z = movement_data['pos_z']
             time = movement_data['time']
             center_x = np.mean(pos_x)
