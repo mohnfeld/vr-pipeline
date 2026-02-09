@@ -98,6 +98,9 @@ if __name__ == '__main__':
             srcfile = os.path.abspath(os.path.join(srcdir, f))
             targetfile = os.path.abspath(os.path.join(targetdir, f))
             movement_data = pd.read_csv(srcfile)
+            if movement_data.empty:
+                print(f"Warning: {srcfile} is empty. Skipping.")
+                continue
             pos_x = movement_data['pos_x']
             pos_z = movement_data['pos_z']
             time = movement_data['time']
